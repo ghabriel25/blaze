@@ -66,7 +66,6 @@ class Wrapper
 
         $output .= 'if ($__view):'."\n";
         $output .= '$__bladeCompiler = $__blaze->compiler;' . "\n";
-        $output .= '$__blaze->pushData($__data);'."\n";
         $output .= 'extract($__data, EXTR_SKIP);'."\n";
 
         if ($sourceUsesProps) {
