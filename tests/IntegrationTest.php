@@ -115,7 +115,7 @@ test('echo handlers work for direct view renders', function () {
     expect(view('components.alert', ['message' => str('hello')])->render())->toBe('<div>HELLO</div>');
 });
 
-test('aware resolves parent data on class-based / direct view path', function () {
+test('aware resolves parent data on class-based component', function () {
     Blaze::optimize()->in(fixture_path('views/components'));
 
     expect(view('components.aware', ['type' => 'number'])->render())->toContain('type="number"');
