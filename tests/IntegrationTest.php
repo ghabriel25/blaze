@@ -118,9 +118,7 @@ test('echo handlers work for direct view renders', function () {
 test('aware resolves parent data on class-based / direct view path', function () {
     Blaze::optimize()->in(fixture_path('views/components'));
 
-    $html = Blade::render('<x-card type="number"><x-input-aware /></x-card>');
-
-    expect($html)->toContain('type="number"');
+    expect(view('components.aware', ['type' => 'number'])->render())->toContain('type="number"');
 });
 
 test('direct view render does not mutate caller attribute bag', function () {

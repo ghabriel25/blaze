@@ -66,6 +66,7 @@ class Wrapper
 
         $output .= 'if ($__view):'."\n";
         $output .= '$__bladeCompiler = $__blaze->compiler;' . "\n";
+        $output .= '$__blaze->pushData($__data);'."\n";
         $output .= 'extract($__data, EXTR_SKIP);'."\n";
 
         if ($sourceUsesProps) {
@@ -94,6 +95,10 @@ class Wrapper
 
         $compiled = $this->blade->restoreRawBlocks($compiled);
 
+        if (! $this->hasEchoHandlers()) {
+            $compiled = $this->registerEchoHandler($source, $compiled);
+        }
+
         $output .= $compiled;
 
         $output .= '<?php' . "\n";
@@ -101,6 +106,7 @@ class Wrapper
         $contentHandler = $this->manager->isFolding() ? '$__blaze->processPassthroughContent(\'ltrim\', ltrim(ob_get_clean()))' : 'ltrim(ob_get_clean())';
 
         $output .= 'if (!$__view) { echo ' . $contentHandler . '; }'."\n";
+        $output .= 'if ($__view) { $__blaze->popData(); }'."\n";
 
         if ($sourceUsesThis) {
             $output .= '}; if ($__this !== null) { $__blazeFn->call($__this); } else { $__blazeFn(); }'."\n";
@@ -113,6 +119,18 @@ class Wrapper
         $output .= '?>';
 
         return $output;
+    }
+
+    protected function registerEchoHandler($source, $compiled)
+    {
+        if ($this->hasEchoSyntax($source) || $this->hasEchoSyntax($compiled)) {
+            $compiled = $this->blade->compiler->usingEchoFormat(
+                'e($__blaze->compiler->applyEchoHandler(%s))',
+                fn () => $this->blade->compiler->compileEchos($compiled)
+            );
+        }
+
+        return $compiled;
     }
     
     protected function globalVariables(string $source, string $compiled): string
