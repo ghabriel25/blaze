@@ -95,10 +95,6 @@ class Wrapper
 
         $compiled = $this->blade->restoreRawBlocks($compiled);
 
-        if (! $this->hasEchoHandlers()) {
-            $compiled = $this->registerEchoHandler($source, $compiled);
-        }
-
         $output .= $compiled;
 
         $output .= '<?php' . "\n";
@@ -119,18 +115,6 @@ class Wrapper
         $output .= '?>';
 
         return $output;
-    }
-
-    protected function registerEchoHandler($source, $compiled)
-    {
-        if ($this->hasEchoSyntax($source) || $this->hasEchoSyntax($compiled)) {
-            $compiled = $this->blade->compiler->usingEchoFormat(
-                'e($__blaze->compiler->applyEchoHandler(%s))',
-                fn () => $this->blade->compiler->compileEchos($compiled)
-            );
-        }
-
-        return $compiled;
     }
     
     protected function globalVariables(string $source, string $compiled): string

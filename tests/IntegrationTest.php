@@ -37,6 +37,14 @@ test('renders components after clearing compiled views in the same process', fun
     view('mix')->render();
 })->throwsNoExceptions();
 
+test('echo handlers work for direct view renders', function () {
+    Blade::stringable(fn (Stringable $v) => $v->upper());
+
+    Blaze::optimize()->in(fixture_path('views/components'));
+
+    expect(view('components.alert', ['message' => str('hello')])->render())->toBe('<div>HELLO</div>');
+});
+
 test('renders components as views', function () {
     Blaze::optimize()->in(fixture_path('views/components'));
 
@@ -106,14 +114,6 @@ test('folds and compiles the same component', function () {
         ['required' => true]
     );
 })->throwsNoExceptions();
-
-test('echo handlers work for direct view renders', function () {
-    Blade::stringable(fn (Stringable $v) => $v->upper());
-
-    Blaze::optimize()->in(fixture_path('views/components'));
-
-    expect(view('components.alert', ['message' => str('hello')])->render())->toBe('<div>HELLO</div>');
-});
 
 test('aware resolves parent data on class-based component', function () {
     Blaze::optimize()->in(fixture_path('views/components'));
