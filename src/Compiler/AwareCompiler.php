@@ -35,7 +35,7 @@ class AwareCompiler
         foreach ($items as $key => $value) {
             $name = is_int($key) ? $value : $key;
             $arguments = is_int($key) ? '\''.$name.'\'' : '\''.$name.'\', $__awareDefaults[\''.$name.'\']';
-            $output .= '$'.$name.' = $__view ? $__env->getConsumableComponentData('.$arguments.') : $__blaze->getConsumableData('.$arguments.');' . "\n";
+            $output .= '$'.$name.' = $__view ? $__blaze->getViewConsumableData('.$arguments.') : $__blaze->getConsumableData('.$arguments.');' . "\n";
         }
 
         $output .= 'unset($__awareDefaults);' . "\n";
