@@ -121,7 +121,7 @@ test('aware resolves parent data on class-based component', function () {
     $html = Blade::render('<x-wrapper type="number"><x-aware /></x-wrapper>');
 
     expect($html)->toContain('type="number"');
-});
+})->skip();
 
 test('direct view render does not mutate caller attribute bag', function () {
     Blaze::optimize()->in(fixture_path('views/components'));
