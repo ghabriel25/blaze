@@ -1,5 +1,3 @@
-@props(['type' => 'number'])
+@aware(['type' => 'text'])
 
-<div>
-    <x-input-aware />
-</div>
+<input type="{{ $type }}" />

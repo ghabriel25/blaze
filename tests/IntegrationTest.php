@@ -118,7 +118,9 @@ test('folds and compiles the same component', function () {
 test('aware resolves parent data on class-based component', function () {
     Blaze::optimize()->in(fixture_path('views/components'));
 
-    expect(view('components.aware', ['type' => 'number'])->render())->toContain('type="number"');
+    $html = Blade::render('<x-wrapper type="number"><x-aware /></x-wrapper>');
+
+    expect($html)->toContain('type="number"');
 });
 
 test('direct view render does not mutate caller attribute bag', function () {

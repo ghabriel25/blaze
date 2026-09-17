@@ -101,7 +101,6 @@ class Wrapper
         $contentHandler = $this->manager->isFolding() ? '$__blaze->processPassthroughContent(\'ltrim\', ltrim(ob_get_clean()))' : 'ltrim(ob_get_clean())';
 
         $output .= 'if (!$__view) { echo ' . $contentHandler . '; }'."\n";
-        $output .= 'if ($__view) { $__blaze->popData(); }'."\n";
 
         if ($sourceUsesThis) {
             $output .= '}; if ($__this !== null) { $__blazeFn->call($__this); } else { $__blazeFn(); }'."\n";
