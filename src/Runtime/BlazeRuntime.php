@@ -244,18 +244,6 @@ class BlazeRuntime
         return value($default);
     }
 
-    public function getViewConsumableData(string $key, mixed $default = null): mixed
-    {
-        $sentinel = new \stdClass;
-        $value = $this->env->getConsumableComponentData($key, $sentinel);
-
-        if ($value === $sentinel) {
-            return $this->getConsumableData($key, $default);
-        }
-
-        return $value;
-    }
-
     /**
      * Process uncompiled unblaze tags passed through slots or components to handle whitespace.
      */

@@ -66,15 +66,16 @@ class Wrapper
 
         $output .= 'if ($__view):'."\n";
         $output .= '$__bladeCompiler = $__blaze->compiler;' . "\n";
-        $output .= 'extract($__data, EXTR_SKIP);'."\n";
 
         if ($sourceUsesProps) {
-            $output .= 'if (isset($attributes) && $attributes instanceof \Illuminate\View\ComponentAttributeBag) {'."\n";
-            $output .= '$attributes = new \Illuminate\View\ComponentAttributeBag($attributes->all());'."\n";
+            $output .= 'if (($__data[\'attributes\'] ?? null) instanceof \Illuminate\View\ComponentAttributeBag) {'."\n";
+            $output .= '$attributes = new \Illuminate\View\ComponentAttributeBag($__data[\'attributes\']->all()); unset($__data[\'attributes\']);'."\n";
             $output .= '} else {'."\n";
             $output .= '$attributes ??= new \Illuminate\View\ComponentAttributeBag([]);'."\n";
             $output .= '}'."\n";
         }
+
+        $output .= 'extract($__data, EXTR_SKIP);'."\n";
 
         $output .= 'else:'."\n";
         $output .= $this->globalVariables($source, $compiled);
